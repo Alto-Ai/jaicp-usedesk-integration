@@ -15,7 +15,7 @@ class JaicpApiRequest extends ApiRequest{
 
     function get_settings(){
         $data = [
-            'clientId' => $this->ticket->client_id,
+            'clientId' => $this->ticket->getClientId(),
             'query' => $this->ticket->query(),
             'data' => [
                 "channel" => $this->ticket->getPlatform()

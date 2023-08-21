@@ -17,8 +17,8 @@ class UsedeskInterface {
         $this->channel = $channel;
         $this->chat_id = $chat_id;
 
-        if ($ticket->assignee_id){
-            $this->operator_id = $ticket->assignee_id;
+        if ($ticket->getAssigneeId()){
+            $this->operator_id = $ticket->getAssigneeId();
         } else {
             $this->operator_id = $_ENV['default_operator_id'];
         }
@@ -40,7 +40,7 @@ class UsedeskInterface {
     public function switch_to_operator_group($operator_group){
         $change_assignee_request = new UsedeskApiRequest("https://api.usedesk.ru/update/ticket",
             [
-                'ticket_id' => $this->ticket->id,
+                'ticket_id' => $this->ticket->getId(),
                 'group_id' => $operator_group,
                 'user_id' => $_ENV['default_operator_id']
             ]);

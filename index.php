@@ -93,4 +93,5 @@ if ($requestType == RequestType::MESSAGE_TYPE){
 
 $integrationService = new IntegrationService($requestHandler, $requestType);
 $ticket = $integrationService->processRequest();
+print($ticket->getSubject());
 return 404;

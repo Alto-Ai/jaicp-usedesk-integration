@@ -3,15 +3,15 @@
 namespace AltoAi\JaicpUsedeskIntegration\Usedesk;
 
 class Ticket {
-    public $id;
-    public $status_id;
-    public $subject;
-    public $client_id;
-    public $assignee_id;
-    public $group;
-    public $message;
-    public $files = array();
-    private $platform;
+    protected $id;
+    protected $status_id;
+    protected $subject;
+    protected $client_id;
+    protected $assignee_id;
+    protected $group;
+    protected $message;
+    protected $files = array();
+    protected $platform;
 
     public function __construct(array $data)
     {
@@ -21,19 +21,51 @@ class Ticket {
     }
 
     public function hasFiles(){
-        return count($this->files) > 0;
+        return count($this->getFiles()) > 0;
     }
 
     public function botCanAnswer(){
-        return $this->assignee_id == $_ENV['default_operator_id'] || (!$this->assignee_id && strval($this->group) != strval($_ENV['operator_group_id']));
+        return $this->getAssigneeId() == $_ENV['default_operator_id'] || (!$this->getAssigneeId() && strval($this->getGroup()) != strval($_ENV['operator_group_id']));
     }
 
     public function query(){
         if (self::hasFiles()){
             return $_ENV['answers']['file'];
         } else {
-            return $this->message;
+            return $this->getMessage();
         }
+    }
+
+    public function getId(){
+        return $this->id;
+    }
+
+    public function getStatusId(){
+        return $this->status_id;
+    }
+
+    public function getSubject(){
+        return $this->subject;
+    }
+
+    public function getClientId(){
+        return $this->client_id;
+    }
+
+    public function getAssigneeId(){
+        return $this->assignee_id;
+    }
+
+    public function getGroup(){
+        return $this->group;
+    }
+
+    public function getMessage(){
+        return $this->message;
+    }
+
+    public function getFiles(){
+        return $this->files;
     }
 
     public function getPlatform() : string {

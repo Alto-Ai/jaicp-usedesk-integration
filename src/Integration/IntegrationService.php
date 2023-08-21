@@ -24,7 +24,6 @@ class IntegrationService {
         if ($this->requestHandler->botCanAnswer()){
             $jaicpInterface = new JaicpInterface($this->ticket);
             $result = $jaicpInterface->send_message();
-            return $result;
         }
         return $this->ticket;
     }
