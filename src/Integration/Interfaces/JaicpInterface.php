@@ -7,10 +7,10 @@ use AltoAi\JaicpUsedeskIntegration\Usedesk\Ticket;
 
 class JaicpInterface {
     
-    public $bot_answer;
-    public $transition;
-    public $state;
-    private $ticket;
+    protected $bot_answer;
+    protected $transition;
+    protected $state;
+    protected $ticket;
 
     function __construct(Ticket $ticket){
         $this->ticket = $ticket;
@@ -20,10 +20,26 @@ class JaicpInterface {
         $request = new JaicpApiRequest($_ENV['chat_api_url'], ['ticket' => $this->ticket]);
         $result = $request->make();
 
-        $this->bot_answer = $result['data']['replies'];
-        $this->transition = $result['data']['replies'][0]['transition'];
-        $this->state = $result['data']['replies'][0]['state'];
+        $this->bot_answer = $result['body']['data']['replies'];
+        $this->transition = $result['body']['data']['replies'][0]['transition'];
+        $this->state = $result['body']['data']['replies'][0]['state'];
 
         return $result;
+    }
+
+    public function getBotAnswer(){
+        return $this->bot_answer;
+    }
+
+    public function getTransition(){
+        return $this->transition;
+    }
+
+    public function getState(){
+        return $this->state;
+    }
+
+    public function getTicket(){
+        return $this->ticket;
     }
 }

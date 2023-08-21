@@ -1,35 +1,32 @@
 <?php
 namespace AltoAi\JaicpUsedeskIntegration\Integration;
-use AltoAi\JaicpUsedeskIntegration\Integration\Interfaces\JaicpInterface;
-use AltoAi\JaicpUsedeskIntegration\Integration\Request\Handlers\MessageHandler;
-use AltoAi\JaicpUsedeskIntegration\Integration\Request\Handlers\TriggerHandler;
 use AltoAi\JaicpUsedeskIntegration\Integration\Request\RequestHandler;
-use AltoAi\JaicpUsedeskIntegration\Integration\Request\RequestType;
+use AltoAi\JaicpUsedeskIntegration\Usedesk\Ticket;
 
 class IntegrationService {
     protected $requestHandler;
     protected $requestType;
 
-    public $ticket;
+    protected $ticket;
 
     public function __construct(RequestHandler $requestHandler, string $requestType)
     {
         $this->requestHandler = $requestHandler;
         $this->requestType = $requestType;
+        $this->setTicket($requestHandler->getTicket());
     }
 
     public function processRequest(){
-        $this->ticket();
 
-        if ($this->requestHandler->botCanAnswer()){
-            $jaicpInterface = new JaicpInterface($this->ticket);
-            $result = $jaicpInterface->send_message();
-        }
+        return $this->requestHandler->handleRequest();
+    }
+
+    public function getTicket(){
         return $this->ticket;
     }
 
-    private function ticket(){
-        $this->ticket = $this->requestHandler->getTicket();
+    protected function setTicket(Ticket $ticket){
+        $this->ticket = $ticket;
     }
 
     

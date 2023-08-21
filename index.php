@@ -4,6 +4,7 @@ use AltoAi\JaicpUsedeskIntegration\Integration\IntegrationService;
 use AltoAi\JaicpUsedeskIntegration\Integration\Request\Handlers\MessageHandler;
 use AltoAi\JaicpUsedeskIntegration\Integration\Request\Handlers\TriggerHandler;
 use AltoAi\JaicpUsedeskIntegration\Integration\Request\RequestType;
+use AltoAi\JaicpUsedeskIntegration\Common\Logger;
 
 $debugMessage = [
     'chat_id' => 25413,
@@ -81,7 +82,12 @@ $debugTrigger = [
 ];
 $_ENV = require_once("config/app.php");
 
-$requestBody = $debugMessageWithFile;
+//$requestBody = $debugMessageWithFile;
+$requestBody = json_decode(file_get_contents("php://input"), true);
+if (!$requestBody){
+    $requestBody = $_REQUEST;
+}
+Logger::log_to_file("receive", $requestBody);
 
 $requestType = RequestType::requestType($requestBody);
 
@@ -92,6 +98,8 @@ if ($requestType == RequestType::MESSAGE_TYPE){
 }
 
 $integrationService = new IntegrationService($requestHandler, $requestType);
-$ticket = $integrationService->processRequest();
-print($ticket->getSubject());
-return 404;
+$result = $integrationService->processRequest();
+
+print_r($result);
+return $result;
+

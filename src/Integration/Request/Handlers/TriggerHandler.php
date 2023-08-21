@@ -14,7 +14,7 @@ class TriggerHandler implements RequestHandler{
         $this->trigger = new Trigger($requestData);
     }
 
-    public function handleRequest($requestData)
+    public function handleRequest()
     {
         return true;
     }

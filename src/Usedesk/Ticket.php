@@ -29,7 +29,7 @@ class Ticket {
     }
 
     public function query(){
-        if (self::hasFiles()){
+        if ($this->hasFiles()){
             return $_ENV['answers']['file'];
         } else {
             return $this->getMessage();

@@ -2,6 +2,7 @@
 
 namespace AltoAi\JaicpUsedeskIntegration\Integration\Request\Handlers;
 
+use AltoAi\JaicpUsedeskIntegration\Integration\Interfaces\JaicpInterface;
 use AltoAi\JaicpUsedeskIntegration\Integration\Request\RequestHandler;
 use AltoAi\JaicpUsedeskIntegration\Usedesk\Ticket;
 
@@ -22,9 +23,13 @@ class MessageHandler implements RequestHandler{
         $ticket['platform'] = $this->platform;
         $this->ticket = new Ticket($ticket);
     }
-    public function handleRequest($requestData)
+    public function handleRequest()
     {
-        
+        if ($this->botCanAnswer()){
+            $jaicpInterface = new JaicpInterface($this->getTicket());
+            $result = $jaicpInterface->send_message();
+            return $result;
+        }
 
         return $this->ticket;
     }
